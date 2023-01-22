@@ -1,0 +1,6 @@
+# NODE FOLDERS AND FILES
+node_modules/*
+package-lock.json
+
+# PRE-BUILD FILES
+build/*

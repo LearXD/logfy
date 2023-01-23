@@ -2,10 +2,11 @@
   "name": "logfy",
   "version": "0.0.1",
   "description": "A beautiful logger for NodeJS",
-  "main": "build/index.js",
+  "main": "index.js",
   "scripts": {
     "start": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node ./test",
+    "build": "tsc",
     "dev-build": "ts-node-dev ./src/index.ts"
   },
   "repository": {
@@ -17,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/LearXD/logfy/issues"
   },
-  "homepage": "https://github.com/LearXD/logfy#readme"
+  "homepage": "https://github.com/LearXD/logfy#readme",
+  "dependencies": {
+    "chalk": "^5.2.0"
+  }
 }

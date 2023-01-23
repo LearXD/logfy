@@ -1,5 +1,5 @@
-const cors = require('cors');
+const chalk = require('chalk');
 
 module.exports = () => {
-    return cors.hex('#F00')('Hello World')
+    return chalk.hex('#F00')('Hello World')
 }

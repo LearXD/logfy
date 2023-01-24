@@ -1,55 +1,69 @@
 import chalk from 'chalk'
 
-export default class Logfy {
+export const LogLevel = {
+    INFO: 0,
+    ALERT: 1,
+    ERROR: 2,
+    DEBUG: 3,
+    OK: 4,
+    ALL: 5
+}
 
-    constructor() {
+export const DEFAULT_LOG_LEVEL = LogLevel.INFO;
+export const HIGH_LOG_LEVEL = LogLevel.ALL;
+export class Logfy {
+
+    loggerFunctions = {};
+
+    constructor(options) {
+        this.logLevel = options?.logLevel || DEFAULT_LOG_LEVEL;
         this.init();
     }
 
     init = () => {
         this.registerLogger('info', 
         {
-           symbol: 'ℹ',
+           symbol: '‼',
            label: 'INFO',
            labelBackgroundColor: '#0064c2',
            backgroundColor: '#3b3b3b',
-           level: 0
+           level: LogLevel.INFO
         })
 
         this.registerLogger('alert', 
         {
-           symbol: '⚠',
+           symbol: '★',
            label: 'ALERT',
            labelBackgroundColor: '#FFA500',
            backgroundColor: '#3b3b3b',
-           level: 0
+           level: LogLevel.ALERT
         }, ['warn'])
 
         this.registerLogger('error', 
         {
-           symbol: '❌',
+           symbol: '✗',
            label: 'ERROR',
            labelBackgroundColor: '#FF0000',
            backgroundColor: '#3b3b3b',
-           level: 0
+           level: LogLevel.ERROR
         }, ['fail'])
 
         this.registerLogger('debug', 
         {
-           symbol: '🐛',
+           symbol: 'ϟ',
            label: 'DEBUG',
            labelBackgroundColor: '#ebeb00',
            backgroundColor: '#3b3b3b',
-           level: 0
+           level: LogLevel.DEBUG
         })
 
         this.registerLogger('ok', 
         {
-           symbol: '✅',
+           symbol: '✓',
            label: 'SUCCESS',
            labelBackgroundColor: '#00FF00',
            backgroundColor: '#3b3b3b',
-           level: 0
+           level: LogLevel.OK
         }, ['success'])
     }
 
@@ -78,31 +92,52 @@ export default class Logfy {
             throw new Error("Function already exists for " + name)
         }
 
+        
         this[name] = (...args) => {
+
+            if(this.logLevel < data.level) {
+                return;
+            } 
+
             if(args.length) {
                 const prefix = this.parsePrefix(data);
                 let message = "";
                 args.forEach((arg) => {
-                    if(typeof arg !== "string") {
-                        if(arg.toString) {
-                            message += arg.toString();
-                        }
-                        return;
-                    }
-                    message += arg;
+                    message += toString(arg);
                 })
                 this.show(this.parseBody(data, `${prefix} ${message} `));
             }
         }
+        this.loggerFunctions[name] = this[name];
 
         if(aliases) {
             aliases.forEach((alias) => {
                 this[alias] = this[name];
+                this.loggerFunctions[alias] = this[name];
             })
         }
     }
 }
 
+export const toString = (obj) => {
+    if(typeof obj === "string") {
+        return obj;
+    }
+    if(typeof obj !== "object" && obj.toString) {
+        return obj.toString();
+    }
+    
+    return JSON.stringify(obj);
+}
+
 export const getDefaultMoment = () => {
     return new Date(Date.now()).toLocaleTimeString();
 }
+
+const logger = new Logfy({logLevel: HIGH_LOG_LEVEL});
+export default {
+    ...logger.loggerFunctions,
+    println (){
+        console.log("\n")
+    }
+};

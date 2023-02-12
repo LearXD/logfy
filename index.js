@@ -1,6 +1,8 @@
-import chalk from 'chalk'
+'use strict';
 
-export const LogLevel = {
+const chalk = require('chalk');
+
+module.exports.LogLevel = {
     INFO: 0,
     ALERT: 1,
     ERROR: 2,
@@ -9,9 +11,9 @@ export const LogLevel = {
     ALL: 5
 }
 
-export const DEFAULT_LOG_LEVEL = LogLevel.INFO;
-export const HIGH_LOG_LEVEL = LogLevel.ALL;
-export class Logfy {
+module.exports.DEFAULT_LOG_LEVEL = LogLevel.INFO;
+module.exports.HIGH_LOG_LEVEL = LogLevel.ALL;
+module.exports.Logfy = class Logfy {
 
     loggerFunctions = {};
 
@@ -119,7 +121,7 @@ export class Logfy {
     }
 }
 
-export const toString = (obj) => {
+module.exports.toString = (obj) => {
     if(typeof obj === "string") {
         return obj;
     }
@@ -130,12 +132,12 @@ export const toString = (obj) => {
     return JSON.stringify(obj);
 }
 
-export const getDefaultMoment = () => {
+module.exports.getDefaultMoment = () => {
     return new Date(Date.now()).toLocaleTimeString();
 }
 
 const logger = new Logfy({logLevel: HIGH_LOG_LEVEL});
-export default {
+module.exports.default = {
     ...logger.loggerFunctions,
     println (){
         console.log("\n")

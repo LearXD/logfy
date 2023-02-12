@@ -1,9 +1,10 @@
 {
   "name": "logfy",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A beautiful logger for NodeJS",
-  "type": "module",
+  "types": "src/index.d.ts",
   "main": "src/index.js",
+  "keywords": ["logger", "custom", "chalk", "beautifull logger"],
   "scripts": {
     "start": "node --es-module-specifier-resolution=node ./src/index.js",
     "sandbox": "node --es-module-specifier-resolution=node ./sandbox/index.js",

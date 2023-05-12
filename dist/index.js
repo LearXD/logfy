@@ -11,11 +11,12 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Logfy = void 0;
 var chalk = require("chalk");
+var date_fns_1 = require("date-fns");
 var Logfy = /** @class */ (function () {
-    function Logfy(options) {
-        this.options = options;
+    function Logfy(configuration) {
+        this.configuration = configuration;
         this.loggers = {};
-        if (!(options === null || options === void 0 ? void 0 : options.disableDefaults)) {
+        if (!(configuration === null || configuration === void 0 ? void 0 : configuration.disableDefaults)) {
             this.registerDefaults();
         }
     }
@@ -53,8 +54,11 @@ var Logfy = /** @class */ (function () {
     };
     Logfy.prototype.getPrefix = function (options) {
         var text = " ".concat(options.symbol, " ").concat(options.label, " ");
+        if (this.configuration.showTimestamp) {
+            text += "[".concat((0, date_fns_1.format)(Date.now(), 'HH:mm:ss'), "] ");
+        }
         if (options.prefixBackground) {
-            return chalk.bgHex(options.prefixBackground)(text);
+            text = chalk.bgHex(options.prefixBackground)(text);
         }
         return text;
     };
@@ -99,4 +103,4 @@ var Logfy = /** @class */ (function () {
     return Logfy;
 }());
 exports.Logfy = Logfy;
-exports.default = new Logfy({ disableDefaults: false });
+exports.default = new Logfy({ disableDefaults: false, showTimestamp: true });

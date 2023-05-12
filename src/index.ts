@@ -1,4 +1,6 @@
-import chalk = require('chalk')
+import chalk = require('chalk');
+import { format } from 'date-fns';
+
 
 interface LoggerData {
   symbol: string,
@@ -9,14 +11,15 @@ interface LoggerData {
 
 interface Options {
   disableDefaults?: boolean;
+  showTimestamp: boolean;
 }
 
 export class Logfy {
 
   public loggers: Record<string, CallableFunction> = {}
 
-  public constructor(public options?: Options) {
-    if (!options?.disableDefaults) {
+  public constructor(public configuration: Options) {
+    if (!configuration?.disableDefaults) {
       this.registerDefaults();
     }
   }
@@ -61,10 +64,16 @@ export class Logfy {
   }
 
   private getPrefix(options: LoggerData) {
-    const text = ` ${options.symbol} ${options.label} `
-    if (options.prefixBackground) {
-      return chalk.bgHex(options.prefixBackground)(text)
+    let text = ` ${options.symbol} ${options.label} `
+
+    if (this.configuration.showTimestamp) {
+      text += `[${format(Date.now(), 'HH:mm:ss')}] `;
     }
+
+    if (options.prefixBackground) {
+      text = chalk.bgHex(options.prefixBackground)(text)
+    }
+
     return text;
   }
 
@@ -102,4 +111,4 @@ export class Logfy {
   }
 }
 
-export default new Logfy({ disableDefaults: false });
+export default new Logfy({ disableDefaults: false, showTimestamp: true });

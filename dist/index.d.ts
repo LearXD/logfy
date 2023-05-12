@@ -6,11 +6,12 @@ interface LoggerData {
 }
 interface Options {
     disableDefaults?: boolean;
+    showTimestamp: boolean;
 }
 export declare class Logfy {
-    options?: Options | undefined;
+    configuration: Options;
     loggers: Record<string, CallableFunction>;
-    constructor(options?: Options | undefined);
+    constructor(configuration: Options);
     registerDefaults(): void;
     private getPrefix;
     registerLogger(name: string, data: LoggerData, aliases?: string[]): void;

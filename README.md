@@ -18,6 +18,12 @@ npm i --save github.com/LearXD/logfy
 
 # Usage
 
+<br>
+<div align="center">
+  <image src="./assets/logs.png"/>
+</div>
+<br>
+
 ## Java Script
 
 ```js
@@ -27,7 +33,8 @@ const logfy = require('logfy');
 ```ts
 import logfy from 'logfy';
 ```
-## Usage
+## Example
+
 ```js
 logfy.info("Server started! 😎");
 logfy.alert("Something important! 😮");
@@ -45,6 +52,8 @@ logfy.registerLogger('customName', {
 logfy.customName("A MESSAGE... 😁")
 
 ```
+
+
 
 
 # License

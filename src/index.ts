@@ -7,9 +7,19 @@ interface LoggerData {
   contentBackground?: string;
 }
 
-class Logfy {
+interface Options {
+  disableDefaults?: boolean;
+}
+
+export class Logfy {
 
   public loggers: Record<string, CallableFunction> = {}
+
+  public constructor(public options?: Options) {
+    if (!options?.disableDefaults) {
+      this.registerDefaults();
+    }
+  }
 
   public registerDefaults() {
     this.registerLogger('info', {
@@ -60,12 +70,14 @@ class Logfy {
 
   public registerLogger(name: string, data: LoggerData, aliases: string[] = []) {
     aliases.push(name);
-
     aliases.forEach((logger: string) => {
-      if (this.loggers[logger]) {
+      // @ts-ignore
+      if (this[logger]) {
         throw new Error('You can\'t register 2 logger with the same name!');
       }
-      this.loggers[logger] = ((...args: any) => {
+
+      // @ts-ignore
+      this[logger] = ((...args: any) => {
         this.customLog(data, ...args);
       })
     })
@@ -90,10 +102,4 @@ class Logfy {
   }
 }
 
-const logfy = new Logfy();
-const loggers = logfy.loggers;
-
-export default {
-  ...loggers,
-  Logfy
-};
+export default new Logfy({ disableDefaults: false });

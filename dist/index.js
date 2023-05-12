@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
         if (ar || !(i in from)) {
@@ -20,10 +9,15 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Logfy = void 0;
 var chalk = require("chalk");
 var Logfy = /** @class */ (function () {
-    function Logfy() {
+    function Logfy(options) {
+        this.options = options;
         this.loggers = {};
+        if (!(options === null || options === void 0 ? void 0 : options.disableDefaults)) {
+            this.registerDefaults();
+        }
     }
     Logfy.prototype.registerDefaults = function () {
         this.registerLogger('info', {
@@ -69,10 +63,12 @@ var Logfy = /** @class */ (function () {
         if (aliases === void 0) { aliases = []; }
         aliases.push(name);
         aliases.forEach(function (logger) {
-            if (_this.loggers[logger]) {
+            // @ts-ignore
+            if (_this[logger]) {
                 throw new Error('You can\'t register 2 logger with the same name!');
             }
-            _this.loggers[logger] = (function () {
+            // @ts-ignore
+            _this[logger] = (function () {
                 var args = [];
                 for (var _i = 0; _i < arguments.length; _i++) {
                     args[_i] = arguments[_i];
@@ -102,6 +98,5 @@ var Logfy = /** @class */ (function () {
     };
     return Logfy;
 }());
-var logfy = new Logfy();
-var loggers = logfy.loggers;
-exports.default = __assign(__assign({}, loggers), { Logfy: Logfy });
+exports.Logfy = Logfy;
+exports.default = new Logfy({ disableDefaults: false });

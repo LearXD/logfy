@@ -5,12 +5,12 @@ interface LoggerData {
     contentBackground?: string;
 }
 declare class Logfy {
-    static loggers: Record<string, CallableFunction>;
-    static registerDefaults(): void;
-    private static getPrefix;
-    static registerLogger(name: string, data: LoggerData, aliases?: string[]): void;
-    private static agrsToString;
-    private static customLog;
+    loggers: Record<string, CallableFunction>;
+    registerDefaults(): void;
+    private getPrefix;
+    registerLogger(name: string, data: LoggerData, aliases?: string[]): void;
+    private agrsToString;
+    private customLog;
 }
 declare const _default: {
     Logfy: typeof Logfy;

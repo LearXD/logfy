@@ -90,9 +90,10 @@ class Logfy {
   }
 }
 
-Logfy.registerDefaults();
+const logfy = new Logfy();
+const loggers = logfy.loggers;
 
 export default {
-  ...Logfy.loggers,
+  ...loggers,
   Logfy
 };

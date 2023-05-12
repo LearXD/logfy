@@ -23,8 +23,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var chalk = require("chalk");
 var Logfy = /** @class */ (function () {
     function Logfy() {
+        this.loggers = {};
     }
-    Logfy.registerDefaults = function () {
+    Logfy.prototype.registerDefaults = function () {
         this.registerLogger('info', {
             symbol: '!!',
             label: 'INFO',
@@ -56,14 +57,14 @@ var Logfy = /** @class */ (function () {
             contentBackground: '#3b3b3b',
         }, ['success']);
     };
-    Logfy.getPrefix = function (options) {
+    Logfy.prototype.getPrefix = function (options) {
         var text = " ".concat(options.symbol, " ").concat(options.label, " ");
         if (options.prefixBackground) {
             return chalk.bgHex(options.prefixBackground)(text);
         }
         return text;
     };
-    Logfy.registerLogger = function (name, data, aliases) {
+    Logfy.prototype.registerLogger = function (name, data, aliases) {
         var _this = this;
         if (aliases === void 0) { aliases = []; }
         aliases.push(name);
@@ -80,7 +81,7 @@ var Logfy = /** @class */ (function () {
             });
         });
     };
-    Logfy.agrsToString = function (args) {
+    Logfy.prototype.agrsToString = function (args) {
         return args.map(function (value) {
             if (value instanceof Object || value instanceof Array) {
                 return JSON.stringify(value);
@@ -88,7 +89,7 @@ var Logfy = /** @class */ (function () {
             return value === null || value === void 0 ? void 0 : value.toString();
         });
     };
-    Logfy.customLog = function (data) {
+    Logfy.prototype.customLog = function (data) {
         var args = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             args[_i - 1] = arguments[_i];
@@ -99,8 +100,8 @@ var Logfy = /** @class */ (function () {
         }
         console.log(text + chalk.reset(String.fromCharCode(12288)));
     };
-    Logfy.loggers = {};
     return Logfy;
 }());
-Logfy.registerDefaults();
-exports.default = __assign(__assign({}, Logfy.loggers), { Logfy: Logfy });
+var logfy = new Logfy();
+var loggers = logfy.loggers;
+exports.default = __assign(__assign({}, loggers), { Logfy: Logfy });

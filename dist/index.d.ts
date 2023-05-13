@@ -18,5 +18,5 @@ export declare class Logfy {
     private agrsToString;
     private customLog;
 }
-declare const _default: Logfy;
+declare const _default: any;
 export default _default;

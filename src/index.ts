@@ -111,4 +111,4 @@ export class Logfy {
   }
 }
 
-export default new Logfy({ disableDefaults: false, showTimestamp: true });
+export default (new Logfy({ disableDefaults: false, showTimestamp: true }) as any);
